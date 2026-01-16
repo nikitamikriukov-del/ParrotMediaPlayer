@@ -1,60 +1,71 @@
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: black;
-    color: white;
+  margin: 0;
+  background: black;
+  color: white;
+  font-family: Arial, sans-serif;
 }
 
+/* TOP BAR */
 .top-bar {
-    background: #2f7d32;
-    padding: 12px;
-    font-weight: bold;
+  background: #2e7d32;
+  padding: 12px 20px;
+  font-size: 18px;
+  font-weight: bold;
 }
 
+/* PLAYER */
 .player {
-    padding: 20px;
+  padding: 20px;
 }
 
+/* NOW PLAYING */
+#nowPlaying {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+/* PROGRESS */
 #progress {
-    width: 100%;
-    margin: 10px 0;
+  width: 100%;
+  margin: 10px 0;
 }
 
-.time {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
+/* TIME */
+.time-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
 }
 
+/* CONTROLS */
 .controls {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .controls button {
-    font-size: 20px;
-    margin-right: 5px;
+  font-size: 18px;
+  margin-right: 10px;
 }
 
-.tracks-container {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    margin-top: 40px;
+/* BUILT-IN TRACK BUTTONS */
+#tracksContainer {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 .track-btn {
-    background: #0a1fff;
-    color: white;
-    border: none;
-    padding: 16px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
-    min-width: 200px;
+  background: #0a1fff;
+  color: white;
+  border: none;
+  padding: 16px 22px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .track-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 12px rgba(0, 150, 255, 0.8);
+  background: #1e3cff;
 }
