@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Parrot Media Player</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- TOP BAR -->
   <div class="top-bar">
-    <div class="title">🦜 Parrot Media Player</div>
+    🦜 Parrot Media Player
     <button class="settings-btn">⚙ SETTINGS</button>
   </div>
 
-  <!-- MAIN PLAYER -->
   <div class="player">
+    <div id="nowPlaying" class="now-playing">No file loaded</div>
 
-    <div id="nowPlaying">No file loaded</div>
-
-    <input type="range" id="progress" value="0">
+    <input
+      type="range"
+      id="progress"
+      value="0"
+      min="0"
+      max="100"
+    />
 
     <div class="time-row">
       <span id="currentTime">0:00</span>
@@ -29,21 +32,15 @@
       <button id="playBtn">▶</button>
       <button id="stopBtn">■</button>
 
-      <label class="file-label">
+      <label class="file-btn">
         Choose File
-        <input type="file" id="fileInput">
+        <input type="file" id="fileInput" hidden />
       </label>
-      <span class="file-name">No file chosen</span>
     </div>
 
-    <!-- TRACK BUTTON AREA (UI ONLY) -->
-    <div id="tracksContainer">
-      <button class="track-btn">Beethoven – Moonlight Sonata</button>
-      <button class="track-btn">Never Gonna Give You Up</button>
-      <button class="track-btn">Pirates of the Caribbean – He's a Pirate</button>
-    </div>
-
+    <div id="tracksContainer" class="tracks-container"></div>
   </div>
 
+  <script src="script.js"></script>
 </body>
 </html>
