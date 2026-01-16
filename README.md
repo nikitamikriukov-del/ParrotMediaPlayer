@@ -1,2 +1,13 @@
 # ParrotMediaPlayer
-A lightweight music media player built in 2 days. Plays local MP3 files, supports 2× playback speed, keyboard shortcuts available, and independent volume control without affecting your PC's volume.
+Music Player That Has Keyboard shortcuts, ParrotMediaPlayer only accepts MP3 files, MID/MIDI files will be added soon, 
+
+Shortcuts: 
+J:Stop/Play Audio from MP3 file |
+Spacebar: Stop/Play Audio from MP3 file |
+K:Hold K to put Audio on 2x speed (can be changed in settings menu) |
+L:Restart Audio (Audio won't start playing when pressed L/Square) 
+
+Settings: 
+Volume (Default=100%, doesn't connect to your PC's Volume) |
+K hold (Default=2x speed, can be changed to 1.5x) 
+
