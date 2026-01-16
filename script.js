@@ -3,75 +3,79 @@ const audio = new Audio();
 const playBtn = document.getElementById("playBtn");
 const stopBtn = document.getElementById("stopBtn");
 const fileInput = document.getElementById("fileInput");
-const progress = document.getElementById("progress");
 const nowPlaying = document.getElementById("nowPlaying");
+const progress = document.getElementById("progress");
 const currentTimeEl = document.getElementById("currentTime");
 const durationEl = document.getElementById("duration");
 const tracksContainer = document.getElementById("tracksContainer");
 
-// ✅ BUILT-IN TRACKS
+/* BUILT-IN TRACKS */
 const builtInTracks = [
-    {
-        name: "Beethoven – Moonlight Sonata",
-        file: "audio/Beethoven-Moonlight-Sonata.mp3"
-    },
-    {
-        name: "Never Gonna Give You Up",
-        file: "audio/NeverGonnaGiveYouUp-RickAstley.mp3"
-    },
-    {
-        name: "Pirates of the Caribbean – He's a Pirate",
-        file: "audio/PiratesOfTheCaribbean-HesAPirate.mp3"
-    }
+  {
+    name: "Beethoven – Moonlight Sonata",
+    file: "audio/Beethoven-Moonlight-Sonata.mp3"
+  },
+  {
+    name: "Never Gonna Give You Up",
+    file: "audio/NeverGonnaGiveYouUp-RickAstley.mp3"
+  },
+  {
+    name: "Pirates of the Caribbean – He's a Pirate",
+    file: "audio/PiratesOfTheCaribbean-HesAPirate.mp3"
+  }
 ];
 
-// ✅ CREATE BUTTONS (THIS NOW WORKS)
+/* CREATE BUTTONS */
 builtInTracks.forEach(track => {
-    const btn = document.createElement("button");
-    btn.className = "track-btn";
-    btn.textContent = track.name;
+  const btn = document.createElement("button");
+  btn.className = "track-btn";
+  btn.textContent = track.name;
 
-    btn.onclick = () => {
-        audio.src = track.file;
-        audio.play();
-        nowPlaying.textContent = track.name;
-    };
+  btn.onclick = () => {
+    audio.src = track.file;
+    audio.load();
+    audio.play();
+    nowPlaying.textContent = track.name;
+  };
 
-    tracksContainer.appendChild(btn);
+  tracksContainer.appendChild(btn);
 });
 
-// CONTROLS
+/* FILE INPUT */
+fileInput.onchange = e => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  audio.src = URL.createObjectURL(file);
+  audio.load();
+  audio.play();
+  nowPlaying.textContent = file.name;
+};
+
+/* CONTROLS */
 playBtn.onclick = () => {
-    audio.paused ? audio.play() : audio.pause();
+  audio.paused ? audio.play() : audio.pause();
 };
 
 stopBtn.onclick = () => {
-    audio.pause();
-    audio.currentTime = 0;
+  audio.pause();
+  audio.currentTime = 0;
 };
 
-fileInput.onchange = e => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    audio.src = URL.createObjectURL(file);
-    audio.play();
-    nowPlaying.textContent = file.name;
-};
-
-// PROGRESS
+/* PROGRESS */
 audio.ontimeupdate = () => {
-    progress.value = (audio.currentTime / audio.duration) * 100 || 0;
-    currentTimeEl.textContent = format(audio.currentTime);
-    durationEl.textContent = format(audio.duration || 0);
+  progress.value = (audio.currentTime / audio.duration) * 100 || 0;
+  currentTimeEl.textContent = format(audio.currentTime);
+  durationEl.textContent = format(audio.duration);
 };
 
 progress.oninput = () => {
-    audio.currentTime = (progress.value / 100) * audio.duration;
+  audio.currentTime = (progress.value / 100) * audio.duration;
 };
 
 function format(sec) {
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60).toString().padStart(2, "0");
-    return `${m}:${s}`;
+  if (!sec) return "0:00";
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60).toString().padStart(2, "0");
+  return `${m}:${s}`;
 }
