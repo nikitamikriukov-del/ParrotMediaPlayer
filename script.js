@@ -1,81 +1,46 @@
-const audio = new Audio();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Parrot Media Player</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
-const playBtn = document.getElementById("playBtn");
-const stopBtn = document.getElementById("stopBtn");
-const fileInput = document.getElementById("fileInput");
-const nowPlaying = document.getElementById("nowPlaying");
-const progress = document.getElementById("progress");
-const currentTimeEl = document.getElementById("currentTime");
-const durationEl = document.getElementById("duration");
-const tracksContainer = document.getElementById("tracksContainer");
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="title">
+      🦜 Parrot Media Player
+    </div>
+    <button class="settings-btn">⚙ SETTINGS</button>
+  </div>
 
-/* BUILT-IN TRACKS */
-const builtInTracks = [
-  {
-    name: "Beethoven – Moonlight Sonata",
-    file: "audio/Beethoven-Moonlight-Sonata.mp3"
-  },
-  {
-    name: "Never Gonna Give You Up",
-    file: "audio/NeverGonnaGiveYouUp-RickAstley.mp3"
-  },
-  {
-    name: "Pirates of the Caribbean – He's a Pirate",
-    file: "audio/PiratesOfTheCaribbean-HesAPirate.mp3"
-  }
-];
+  <!-- MAIN -->
+  <div class="player">
 
-/* CREATE BUTTONS */
-builtInTracks.forEach(track => {
-  const btn = document.createElement("button");
-  btn.className = "track-btn";
-  btn.textContent = track.name;
+    <div class="track-name">
+      Pirates Of The Caribbean - He's a Pirate.mp3
+    </div>
 
-  btn.onclick = () => {
-    audio.src = track.file;
-    audio.load();
-    audio.play();
-    nowPlaying.textContent = track.name;
-  };
+    <!-- PROGRESS -->
+    <div class="progress-wrapper">
+      <div class="progress-bar"></div>
+      <div class="time">0:00 / 1:17</div>
+    </div>
 
-  tracksContainer.appendChild(btn);
-});
+    <!-- CONTROLS -->
+    <div class="controls">
+      <button class="ctrl-btn">▶</button>
+      <button class="ctrl-btn">■</button>
 
-/* FILE INPUT */
-fileInput.onchange = e => {
-  const file = e.target.files[0];
-  if (!file) return;
+      <label class="file-input">
+        Choose File
+        <input type="file" />
+      </label>
+      <span class="file-name">Pirates Of T...A Pirate.mp3</span>
+    </div>
 
-  audio.src = URL.createObjectURL(file);
-  audio.load();
-  audio.play();
-  nowPlaying.textContent = file.name;
-};
+  </div>
 
-/* CONTROLS */
-playBtn.onclick = () => {
-  audio.paused ? audio.play() : audio.pause();
-};
-
-stopBtn.onclick = () => {
-  audio.pause();
-  audio.currentTime = 0;
-};
-
-/* PROGRESS */
-audio.ontimeupdate = () => {
-  progress.value = (audio.currentTime / audio.duration) * 100 || 0;
-  currentTimeEl.textContent = format(audio.currentTime);
-  durationEl.textContent = format(audio.duration);
-};
-
-progress.oninput = () => {
-  audio.currentTime = (progress.value / 100) * audio.duration;
-};
-
-function format(sec) {
-  if (!sec) return "0:00";
-  const m = Math.floor(sec / 60);
-  const s = Math.floor(sec % 60).toString().padStart(2, "0");
-  return `${m}:${s}`;
-}
+</body>
+</html>
