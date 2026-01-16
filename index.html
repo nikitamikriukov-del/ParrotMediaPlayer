@@ -1,59 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>ParrotMediaPlayer</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Parrot Media Player</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="header">🦜 Parrot Media Player</div>
+<header class="top-bar">
+    🦜 Parrot Media Player
+</header>
 
-  <!-- MAIN VIEW -->
-  <div class="display" id="mainView">
-    <div class="top-right">
-      <button class="settings-btn">⚙ SETTINGS</button>
-    </div>
+<div class="player">
 
     <div id="nowPlaying">No file loaded</div>
 
-    <div class="progress-bar-container">
-      <div class="progress-bar" id="progressBar">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
-      <div class="time-text" id="timeText">0:00 / 0:00</div>
+    <input type="range" id="progress" value="0" min="0" max="100">
+
+    <div class="time">
+        <span id="currentTime">0:00</span>
+        <span id="duration">0:00</span>
     </div>
 
     <div class="controls">
-      <button id="play">▶</button>
-      <button id="stop">■</button>
+        <button id="playBtn">▶</button>
+        <button id="stopBtn">■</button>
+        <input type="file" id="fileInput" accept="audio/*">
     </div>
 
-    <input type="file" id="fileInput" accept="audio/*">
-  </div>
+    <!-- 🔴 THIS WAS MISSING -->
+    <div id="tracksContainer" class="tracks-container"></div>
 
-  <!-- SETTINGS VIEW -->
-  <div class="display hidden" id="settingsView">
-    <div class="top-right">
-      <button class="close-btn">✖</button>
-    </div>
+</div>
 
-    <div class="volume-area">
-      <div class="volume-bar" id="volumeBar">
-        <div class="volume-fill" id="volumeFill"></div>
-      </div>
-      <div class="volume-text" id="volumeText">100% vol.</div>
-    </div>
-
-    <div class="speed-setting">
-      <label for="speedSelect">K hold speed</label>
-      <select id="speedSelect">
-        <option value="1.5">1.5×</option>
-        <option value="2">2×</option>
-      </select>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
