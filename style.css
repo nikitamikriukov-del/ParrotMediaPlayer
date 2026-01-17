@@ -92,6 +92,8 @@ input[type="file"] {
   margin-top: 20px;
 }
 
+/* SETTINGS */
+
 .volume-area {
   margin-top: 60px;
 }
@@ -118,4 +120,11 @@ input[type="file"] {
 
 .speed-setting {
   margin-top: 40px;
+}
+
+#useFreeMp3 {
+  margin-top: 10px;
+  padding: 6px 14px;
+  border: none;
+  cursor: pointer;
 }
