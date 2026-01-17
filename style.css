@@ -120,3 +120,11 @@ input[type="file"] {
 
 .speed-setting {
   margin-top: 40px;
+}
+
+#useFreeMp3 {
+  background: white;
+  border: none;
+  padding: 6px 14px;
+  cursor: pointer;
+}
