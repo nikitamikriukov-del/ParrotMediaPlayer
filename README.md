@@ -1,5 +1,5 @@
 # ParrotMediaPlayer
-Music Player That Has Keyboard shortcuts, ParrotMediaPlayer only accepts MP3 files, MID/MIDI files will be added soon, 
+Music Player That Has Keyboard shortcuts, ParrotMediaPlayer only accepts MP3 files, 
 
 Shortcuts: 
 J:Stop/Play Audio from MP3 file |
