@@ -1,45 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>ParrotMediaPlayer</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- <header class="top-bar">
-    <div class="title">🦜 Parrot Media Player</div>
-    <button class="settings-btn">⚙ SETTINGS</button>
-  </header> -->
-  <div class="top-bar">🦜 Parrot Media Player</div> 
-  <div class="top-right">
-    <button class="settings-btn">⚙ SETTINGS</button>
-  </div>
+  <div class="header">🦜 Parrot Media Player</div>
 
-  <main class="player">
+  <!-- MAIN VIEW -->
+  <div class="display" id="mainView">
+    <div class="top-right">
+      <button class="settings-btn">⚙ SETTINGS</button>
+    </div>
 
-    <div id="nowPlaying" class="now-playing">No file loaded</div>
+    <div id="nowPlaying">No file loaded</div>
 
-    <input type="range" id="progress" value="0">
-
-    <div class="time-row">
-      <span id="currentTime">0:00</span>
-      <span id="duration">0:00</span>
+    <div class="progress-bar-container">
+      <div class="progress-bar" id="progressBar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="time-text" id="timeText">0:00 / 0:00</div>
     </div>
 
     <div class="controls">
-      <button id="playBtn" class="control-btn">▶</button>
-      <button id="stopBtn" class="control-btn">■</button>
-
-      <label class="file-btn">
-        Choose File
-        <input type="file" id="fileInput" hidden>
-      </label>
+      <button id="play">▶</button>
+      <button id="stop">■</button>
     </div>
 
-    <div id="tracksContainer" class="tracks-container"></div>
+    <input type="file" id="fileInput" accept="audio/*">
+  </div>
 
-  </main>
+  <!-- SETTINGS VIEW -->
+  <div class="display hidden" id="settingsView">
+    <div class="top-right">
+      <button class="close-btn">✖</button>
+    </div>
+
+    <div class="volume-area">
+      <div class="volume-bar" id="volumeBar">
+        <div class="volume-fill" id="volumeFill"></div>
+      </div>
+      <div class="volume-text" id="volumeText">100% vol.</div>
+    </div>
+
+    <div class="speed-setting">
+      <label for="speedSelect">K hold speed</label>
+      <select id="speedSelect">
+        <option value="1.5">1.5×</option>
+        <option value="2">2×</option>
+      </select>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
