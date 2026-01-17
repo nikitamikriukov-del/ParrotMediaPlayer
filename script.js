@@ -21,18 +21,30 @@ const volumeText = document.getElementById("volumeText");
 
 const speedSelect = document.getElementById("speedSelect");
 
+const freeMp3Select = document.getElementById("freeMp3Select");
+const useFreeMp3Btn = document.getElementById("useFreeMp3");
+
 /* LOAD SAVED SETTINGS */
 audio.volume = Number(localStorage.getItem("parrot_volume") ?? 1);
 speedSelect.value = localStorage.getItem("parrot_speed") ?? "2";
 updateVolumeUI();
 
-/* FILE */
+/* FILE PICKER */
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
   if (!file) return;
   audio.src = URL.createObjectURL(file);
   nowPlaying.textContent = file.name;
+  audio.play();
 });
+
+/* FREE MP3s */
+useFreeMp3Btn.onclick = () => {
+  const fileName = freeMp3Select.value;
+  audio.src = `audio/${fileName}`;
+  nowPlaying.textContent = freeMp3Select.options[freeMp3Select.selectedIndex].text;
+  audio.play();
+};
 
 /* PLAY / STOP */
 playBtn.onclick = () => audio.paused ? audio.play() : audio.pause();
@@ -44,16 +56,13 @@ stopBtn.onclick = () => {
 /* PROGRESS */
 audio.ontimeupdate = () => {
   if (!audio.duration) return;
-  const percent = (audio.currentTime / audio.duration) * 100;
-  progressFill.style.width = percent + "%";
-  timeText.textContent =
-    format(audio.currentTime) + " / " + format(audio.duration);
+  progressFill.style.width = (audio.currentTime / audio.duration) * 100 + "%";
+  timeText.textContent = `${format(audio.currentTime)} / ${format(audio.duration)}`;
 };
 
 progressBar.onclick = e => {
   const rect = progressBar.getBoundingClientRect();
-  const percent = (e.clientX - rect.left) / rect.width;
-  audio.currentTime = percent * audio.duration;
+  audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
 };
 
 /* SETTINGS TOGGLE */
@@ -68,10 +77,10 @@ closeBtn.onclick = () => {
 };
 
 /* VOLUME */
-volumeBar.onmousedown = e => {
-  document.onmousemove = ev => {
+volumeBar.onmousedown = () => {
+  document.onmousemove = e => {
     const rect = volumeBar.getBoundingClientRect();
-    let percent = 1 - (ev.clientY - rect.top) / rect.height;
+    let percent = 1 - (e.clientY - rect.top) / rect.height;
     percent = Math.min(1, Math.max(0, percent));
     audio.volume = percent;
     localStorage.setItem("parrot_volume", percent);
@@ -90,18 +99,8 @@ speedSelect.onchange = () => {
   localStorage.setItem("parrot_speed", speedSelect.value);
 };
 
-/* KEYBOARD */
 document.addEventListener("keydown", e => {
-  if (e.code === "Space" || e.key === "j") {
-    e.preventDefault();
-    audio.paused ? audio.play() : audio.pause();
-  }
-  if (e.key === "l") {
-    audio.currentTime = 0;
-  }
-  if (e.key === "k") {
-    audio.playbackRate = Number(speedSelect.value);
-  }
+  if (e.key === "k") audio.playbackRate = Number(speedSelect.value);
 });
 
 document.addEventListener("keyup", e => {
