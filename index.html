@@ -7,63 +7,63 @@
 </head>
 <body>
 
-  <div class="header">🦜 Parrot Media Player</div>
+<div class="header">🦜 Parrot Media Player</div>
 
-  <!-- MAIN VIEW -->
-  <div class="display" id="mainView">
-    <div class="top-right">
-      <button class="settings-btn">⚙ SETTINGS</button>
-    </div>
-
-    <div id="nowPlaying">No file loaded</div>
-
-    <div class="progress-bar-container">
-      <div class="progress-bar" id="progressBar">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
-      <div class="time-text" id="timeText">0:00 / 0:00</div>
-    </div>
-
-    <div class="controls">
-      <button id="play">▶</button>
-      <button id="stop">■</button>
-    </div>
-
-    <input type="file" id="fileInput" accept="audio/*">
+<!-- MAIN VIEW -->
+<div class="display" id="mainView">
+  <div class="top-right">
+    <button id="openSettings" class="settings-btn">⚙ SETTINGS</button>
   </div>
 
-  <!-- SETTINGS VIEW -->
-  <div class="display hidden" id="settingsView">
-    <div class="top-right">
-      <button class="close-btn">✖</button>
-    </div>
+  <div id="nowPlaying">No file loaded</div>
 
-    <div class="volume-area">
-      <div class="volume-bar" id="volumeBar">
-        <div class="volume-fill" id="volumeFill"></div>
-      </div>
-      <div class="volume-text" id="volumeText">100% vol.</div>
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar">
+      <div class="progress-fill" id="progressFill"></div>
     </div>
-
-    <div class="speed-setting">
-      <label>K hold speed</label>
-      <select id="speedSelect">
-        <option value="1.5">1.5×</option>
-        <option value="2">2×</option>
-      </select>
-    </div>
-
-    <div class="speed-setting">
-      <label>Free MP3s</label>
-      <select id="freeMp3Select">
-        <option value="Pirates">Pirates of the Caribbean</option>
-        <option value="Moonlight">Moonlight Sonata</option>
-        <option value="Rickroll">Never Gonna Give You Up</option>
-      </select>
-      <button id="useFreeMp3">Use</button>
-    </div>
+    <div class="time-text" id="timeText">0:00 / 0:00</div>
   </div>
 
-  <script src="script.js"></script>
+  <div class="controls">
+    <button id="play">▶</button>
+    <button id="stop">■</button>
+  </div>
+
+  <input type="file" id="fileInput" accept="audio/*">
+</div>
+
+<!-- SETTINGS VIEW -->
+<div class="display hidden" id="settingsView">
+  <div class="top-right">
+    <button id="closeSettings" class="close-btn">✖</button>
+  </div>
+
+  <div class="volume-area">
+    <div class="volume-bar" id="volumeBar">
+      <div class="volume-fill" id="volumeFill"></div>
+    </div>
+    <div class="volume-text" id="volumeText">100% vol.</div>
+  </div>
+
+  <div class="speed-setting">
+    <label>K hold speed</label>
+    <select id="speedSelect">
+      <option value="1.5">1.5×</option>
+      <option value="2">2×</option>
+    </select>
+  </div>
+
+  <div class="speed-setting">
+    <label>Free MP3s</label>
+    <select id="freeMp3Select">
+      <option value="Pirates">Pirates of the Caribbean</option>
+      <option value="Moonlight">Moonlight Sonata</option>
+      <option value="Rickroll">Never Gonna Give You Up</option>
+    </select>
+    <button id="useFreeMp3">Use</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
