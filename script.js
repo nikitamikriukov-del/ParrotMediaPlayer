@@ -1,130 +1,125 @@
-* {
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+const audio = new Audio();
+
+/* ELEMENTS */
+const playBtn = document.getElementById("play");
+const stopBtn = document.getElementById("stop");
+const fileInput = document.getElementById("fileInput");
+const nowPlaying = document.getElementById("nowPlaying");
+
+const progressBar = document.getElementById("progressBar");
+const progressFill = document.getElementById("progressFill");
+const timeText = document.getElementById("timeText");
+
+const mainView = document.getElementById("mainView");
+const settingsView = document.getElementById("settingsView");
+
+const settingsBtn = document.querySelector(".settings-btn");
+const closeBtn = document.querySelector(".close-btn");
+
+const volumeBar = document.getElementById("volumeBar");
+const volumeFill = document.getElementById("volumeFill");
+const volumeText = document.getElementById("volumeText");
+
+const speedSelect = document.getElementById("speedSelect");
+const freeMp3Select = document.getElementById("freeMp3Select");
+const useFreeMp3 = document.getElementById("useFreeMp3");
+
+/* FREE MP3 FILES */
+const freeTracks = {
+  Pirates: "./audio/PiratesOfTheCaribbean-HesAPirate.mp3",
+  Moonlight: "./audio/Beethoven-Moonlight-Sonata.mp3",
+  Rickroll: "./audio/NeverGonnaGiveYouUp-RickAstley.mp3"
+};
+
+/* LOAD SETTINGS */
+audio.volume = Number(localStorage.getItem("parrot_volume") ?? 1);
+speedSelect.value = localStorage.getItem("parrot_speed") ?? "2";
+updateVolumeUI();
+
+/* FILE INPUT */
+fileInput.onchange = () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+  audio.src = URL.createObjectURL(file);
+  nowPlaying.textContent = file.name;
+  audio.play();
+};
+
+/* PLAY / STOP */
+playBtn.onclick = () => audio.paused ? audio.play() : audio.pause();
+stopBtn.onclick = () => {
+  audio.pause();
+  audio.currentTime = 0;
+};
+
+/* PROGRESS */
+audio.ontimeupdate = () => {
+  if (!audio.duration) return;
+  progressFill.style.width =
+    (audio.currentTime / audio.duration) * 100 + "%";
+  timeText.textContent =
+    format(audio.currentTime) + " / " + format(audio.duration);
+};
+
+progressBar.onclick = e => {
+  const rect = progressBar.getBoundingClientRect();
+  audio.currentTime =
+    ((e.clientX - rect.left) / rect.width) * audio.duration;
+};
+
+/* SETTINGS TOGGLE */
+settingsBtn.onclick = () => {
+  mainView.classList.add("hidden");
+  settingsView.classList.remove("hidden");
+};
+
+closeBtn.onclick = () => {
+  settingsView.classList.add("hidden");
+  mainView.classList.remove("hidden");
+};
+
+/* FREE MP3 SELECT */
+useFreeMp3.onclick = () => {
+  const key = freeMp3Select.value;
+  audio.src = freeTracks[key];
+  nowPlaying.textContent =
+    freeMp3Select.options[freeMp3Select.selectedIndex].text;
+  audio.play();
+};
+
+/* VOLUME */
+volumeBar.onmousedown = () => {
+  document.onmousemove = e => {
+    const rect = volumeBar.getBoundingClientRect();
+    let percent = 1 - (e.clientY - rect.top) / rect.height;
+    percent = Math.min(1, Math.max(0, percent));
+    audio.volume = percent;
+    localStorage.setItem("parrot_volume", percent);
+    updateVolumeUI();
+  };
+  document.onmouseup = () => document.onmousemove = null;
+};
+
+function updateVolumeUI() {
+  volumeFill.style.height = (audio.volume * 100) + "%";
+  volumeText.textContent = Math.round(audio.volume * 100) + "% vol.";
 }
 
-body {
-  margin: 0;
-  background: black;
-  color: white;
-  overflow: hidden;
-}
+/* SPEED */
+speedSelect.onchange = () => {
+  localStorage.setItem("parrot_speed", speedSelect.value);
+};
 
-.header {
-  background: #2e7d32;
-  padding: 12px;
-  font-weight: bold;
-}
+document.addEventListener("keydown", e => {
+  if (e.key === "k") audio.playbackRate = Number(speedSelect.value);
+});
+document.addEventListener("keyup", e => {
+  if (e.key === "k") audio.playbackRate = 1;
+});
 
-.display {
-  position: relative;
-  height: calc(100vh - 48px);
-  padding: 20px;
-}
-
-.hidden {
-  display: none;
-}
-
-.top-right {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-.settings-btn {
-  background: linear-gradient(#7CFC00, #2e7d32);
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  cursor: pointer;
-}
-
-.close-btn {
-  background: none;
-  color: red;
-  font-size: 22px;
-  border: none;
-  cursor: pointer;
-}
-
-#nowPlaying {
-  margin-top: 20px;
-}
-
-.progress-bar-container {
-  margin-top: 40px;
-}
-
-.progress-bar {
-  height: 8px;
-  background: #444;
-  cursor: pointer;
-}
-
-.progress-fill {
-  height: 100%;
-  width: 0%;
-  background: #e6110e;
-}
-
-.time-text {
-  margin-top: 6px;
-  font-size: 14px;
-  text-align: right;
-}
-
-.controls {
-  margin-top: 20px;
-}
-
-.controls button {
-  background: #333;
-  color: white;
-  border: none;
-  font-size: 18px;
-  padding: 10px 20px;
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-input[type="file"] {
-  margin-top: 20px;
-}
-
-/* SETTINGS */
-
-.volume-area {
-  margin-top: 60px;
-}
-
-.volume-bar {
-  width: 12px;
-  height: 200px;
-  background: #444;
-  position: relative;
-  cursor: pointer;
-}
-
-.volume-fill {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  background: #aaa;
-}
-
-.volume-text {
-  margin-top: 10px;
-}
-
-.speed-setting {
-  margin-top: 40px;
-}
-
-#useFreeMp3 {
-  margin-top: 10px;
-  padding: 6px 14px;
-  border: none;
-  cursor: pointer;
+/* UTIL */
+function format(sec) {
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${s.toString().padStart(2, "0")}`;
 }
