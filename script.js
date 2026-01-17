@@ -1,76 +1,116 @@
 const audio = new Audio();
 
-const playBtn = document.getElementById("playBtn");
-const stopBtn = document.getElementById("stopBtn");
+const playBtn = document.getElementById("play");
+const stopBtn = document.getElementById("stop");
 const fileInput = document.getElementById("fileInput");
-
-const progress = document.getElementById("progress");
 const nowPlaying = document.getElementById("nowPlaying");
-const currentTimeEl = document.getElementById("currentTime");
-const durationEl = document.getElementById("duration");
-const tracksContainer = document.getElementById("tracksContainer");
 
-const builtInTracks = [
-  {
-    name: "Beethoven – Moonlight Sonata",
-    file: "audio/Beethoven-Moonlight-Sonata.mp3"
-  },
-  {
-    name: "Never Gonna Give You Up",
-    file: "audio/NeverGonnaGiveYouUp-RickAstley.mp3"
-  },
-  {
-    name: "Pirates of the Caribbean – He's a Pirate",
-    file: "audio/PiratesOfTheCaribbean-HesAPirate.mp3"
-  }
-];
+const progressBar = document.getElementById("progressBar");
+const progressFill = document.getElementById("progressFill");
+const timeText = document.getElementById("timeText");
 
-// CREATE BLUE BUTTONS
-builtInTracks.forEach(track => {
-  const btn = document.createElement("button");
-  btn.className = "track-btn";
-  btn.textContent = track.name;
+const mainView = document.getElementById("mainView");
+const settingsView = document.getElementById("settingsView");
 
-  btn.onclick = () => {
-    audio.src = track.file;
-    audio.play();
-    nowPlaying.textContent = track.name;
-  };
+const settingsBtn = document.querySelector(".settings-btn");
+const closeBtn = document.querySelector(".close-btn");
 
-  tracksContainer.appendChild(btn);
+const volumeBar = document.getElementById("volumeBar");
+const volumeFill = document.getElementById("volumeFill");
+const volumeText = document.getElementById("volumeText");
+
+const speedSelect = document.getElementById("speedSelect");
+
+/* LOAD SAVED SETTINGS */
+audio.volume = Number(localStorage.getItem("parrot_volume") ?? 1);
+speedSelect.value = localStorage.getItem("parrot_speed") ?? "2";
+updateVolumeUI();
+
+/* FILE */
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+  audio.src = URL.createObjectURL(file);
+  nowPlaying.textContent = file.name;
 });
 
-// CONTROLS
-playBtn.onclick = () => audio.play();
+/* PLAY / STOP */
+playBtn.onclick = () => audio.paused ? audio.play() : audio.pause();
 stopBtn.onclick = () => {
   audio.pause();
   audio.currentTime = 0;
 };
 
-// FILE LOAD
-fileInput.onchange = e => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  audio.src = URL.createObjectURL(file);
-  audio.play();
-  nowPlaying.textContent = file.name;
-};
-
-// PROGRESS
+/* PROGRESS */
 audio.ontimeupdate = () => {
-  progress.value = (audio.currentTime / audio.duration) * 100 || 0;
-  currentTimeEl.textContent = format(audio.currentTime);
-  durationEl.textContent = format(audio.duration);
+  if (!audio.duration) return;
+  const percent = (audio.currentTime / audio.duration) * 100;
+  progressFill.style.width = percent + "%";
+  timeText.textContent =
+    format(audio.currentTime) + " / " + format(audio.duration);
 };
 
-progress.oninput = () => {
-  audio.currentTime = (progress.value / 100) * audio.duration;
+progressBar.onclick = e => {
+  const rect = progressBar.getBoundingClientRect();
+  const percent = (e.clientX - rect.left) / rect.width;
+  audio.currentTime = percent * audio.duration;
 };
 
+/* SETTINGS TOGGLE */
+settingsBtn.onclick = () => {
+  mainView.classList.add("hidden");
+  settingsView.classList.remove("hidden");
+};
+
+closeBtn.onclick = () => {
+  settingsView.classList.add("hidden");
+  mainView.classList.remove("hidden");
+};
+
+/* VOLUME */
+volumeBar.onmousedown = e => {
+  document.onmousemove = ev => {
+    const rect = volumeBar.getBoundingClientRect();
+    let percent = 1 - (ev.clientY - rect.top) / rect.height;
+    percent = Math.min(1, Math.max(0, percent));
+    audio.volume = percent;
+    localStorage.setItem("parrot_volume", percent);
+    updateVolumeUI();
+  };
+  document.onmouseup = () => document.onmousemove = null;
+};
+
+function updateVolumeUI() {
+  volumeFill.style.height = (audio.volume * 100) + "%";
+  volumeText.textContent = Math.round(audio.volume * 100) + "% vol.";
+}
+
+/* SPEED */
+speedSelect.onchange = () => {
+  localStorage.setItem("parrot_speed", speedSelect.value);
+};
+
+/* KEYBOARD */
+document.addEventListener("keydown", e => {
+  if (e.code === "Space" || e.key === "j") {
+    e.preventDefault();
+    audio.paused ? audio.play() : audio.pause();
+  }
+  if (e.key === "l") {
+    audio.currentTime = 0;
+  }
+  if (e.key === "k") {
+    audio.playbackRate = Number(speedSelect.value);
+  }
+});
+
+document.addEventListener("keyup", e => {
+  if (e.key === "k") audio.playbackRate = 1;
+});
+
+/* UTIL */
 function format(sec) {
-  if (!sec) return "0:00";
   const m = Math.floor(sec / 60);
-  const s = Math.floor(sec % 60).toString().padStart(2, "0");
-  return `${m}:${s}`;
+  const s = Math.floor(sec % 60);
+  return `${m}:${s.toString().padStart(2, "0")}`;
 }
